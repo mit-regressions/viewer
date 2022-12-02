@@ -1,0 +1,14 @@
+{% extends "player/base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}" />
+{% endblock %}
+
+{% block body %}
+<form method="post">
+    <h1>login</h1>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">login</button>
+</form>
+{% endblock %}
