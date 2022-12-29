@@ -1,33 +1,16 @@
+import React from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useRef, useEffect } from "react";
-
-
-import Player from '../components/Player'
-
-import videojs from 'video.js';
-// import 'video.js/dist/video-js.css';
-import 'videojs-youtube'
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
-import React from "react";
+import Player from '../components/Player'
 
 const Home: NextPage = () => {
 
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-  const videoJsOptions = {
-    techOrder: ['youtube'],
-    autoplay: false,
-    controls: true,
-    sources: [
-      {
-        src: 'https://www.youtube.com/watch?v=mToftr444Pc',
-        type: 'video/youtube',
-      },
-    ],
-  }
+
   return (
     <>
       <Head>
@@ -41,11 +24,7 @@ const Home: NextPage = () => {
             viewer
           </h1>
 
-
-          <Player {...videoJsOptions} />
-          <div className="flex flex-col items-center justify-center gap-4">
-          </div>
-
+          <Player />
 
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">

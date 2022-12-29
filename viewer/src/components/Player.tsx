@@ -1,34 +1,18 @@
-import { useCallback, useEffect, useState } from 'react'
-import videojs from 'video.js'
-import 'videojs-youtube'
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
-interface PlayerProps {
-    techOrder: string[]
-    autoplay: boolean
-    controls: boolean
-    sources: { src: string; type: string }[]
-  }
+// functional component PlayerReact that uses ReactPlayer
 
-export default function Player(props: PlayerProps) {
-    const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null)
-    const onVideo = useCallback((el: HTMLVideoElement) => {
-        setVideoEl(el)
-    }, [])
-
-    useEffect(() => {
-        if (videoEl == null) return
-        const player = videojs(videoEl, props)
-        return () => {
-          player.dispose()
-        }
-      }, [props, videoEl])
-
+// TODO: parameterize video source and VTT source with props (general spec for 3rd party use!)
+export default function Player() {
     return (
-        <>
-            <h1 className='text-white'>The implementation below is using react functions</h1>
-            <div data-vjs-player>
-                <video ref={onVideo} className="video-js" playsInline />
-            </div>
-        </>
-    )
+        <div className="player-wrapper">
+        <ReactPlayer
+            className="react-player"
+            url="https://www.youtube.com/watch?v=mToftr444Pc"
+            width="100%"
+            height="100%"
+        />
+        </div>
+    );
 }
