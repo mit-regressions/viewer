@@ -12,7 +12,6 @@ const Home: NextPage = () => {
 
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const {theme, setTheme} = useTheme()
-  console.log(theme)
 
   return (
     <>
