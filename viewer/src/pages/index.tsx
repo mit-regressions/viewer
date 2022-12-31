@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useRef } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
-import {useTheme} from 'next-themes'
+import { useTheme } from 'next-themes'
 import Player from '../components/Player'
+
 
 const Home: NextPage = () => {
 
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-  const {theme, setTheme} = useTheme()
+  const { theme, setTheme } = useTheme()
 
   return (
     <>
@@ -21,9 +22,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-black">
-      <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-2 px-4 absolute top-4 right-4">
-        toggle theme
-      </button>
+        <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-2 px-4 absolute top-4 right-4">
+          toggle theme
+        </button>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-1xl font-extrabold tracking-tight text-black dark:text-white sm:text-[3rem]">
             viewer
@@ -32,9 +33,6 @@ const Home: NextPage = () => {
           <Player />
 
           <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-black dark:text-white">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-            </p>
             <AuthShowcase />
           </div>
         </div>
