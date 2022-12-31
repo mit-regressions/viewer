@@ -26,9 +26,16 @@ const Home: NextPage = () => {
           toggle theme
         </button>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-1xl font-extrabold tracking-tight text-black dark:text-white sm:text-[3rem]">
-            viewer
-          </h1>
+          {/* should hug upper-lefthand side */}
+          {/* text in the upper-lefthand corner with some padding */}
+          <div className="titles">
+            <h1 className="text-1xl font-extrabold tracking-tight text-black dark:text-white sm:text-[3rem] top-4 left-4 absolute">
+              documentary metadata viewer
+            </h1>
+            {/* hug the left-hand side of the screen */}
+            <h2 className=" tracking-tight text-gray-500 dark:text-white  top-20 left-6 absolute"><i>current film</i>: MIT: REGRESSIONS intro</h2>
+          </div>
+         
 
           <Player />
 

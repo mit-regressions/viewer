@@ -2,8 +2,80 @@ WEBVTT
 Kind: captions
 Language: en
 
-NOTE  We could have a separation between MUSIC SOURCE, VIDEO SOURCE, NARRATION SOURCE, COMMENTARY, and TRANSCRIPT.
+NOTE  separation between MUSIC SOURCE, VIDEO SOURCE, NARRATION SOURCE, COMMENTARY, and TRANSCRIPT.
 
-NOTE  ["The Vanishing American Family"  by ScubaZ]
 00:00:01.550 --> 00:01:15.448
-{"keywords_alt": "", "gpspoints": {"gps_zoom": "11", "gps_text_alt": "", "gps_text": "Stockholm, Sweden", "gps": "59.3388502,18.0616981"}, "synopsis": "", "subjects": "", "hyperlinks": {"hyperlink_text_alt": "", "hyperlink_text": "", "hyperlink": ""}, "synopsis_alt": "", "title": "The Vanishing American Family", "keywords": "ScubaZ", "title_alt": "", "subjects_alt": ""}
+{
+    "uid": "1",
+    "type": "music",
+    "data": {
+        "type": "music",
+        "title": "The Vanishing American Family",
+        "artist": "ScubaZ",
+        "year": "2001",
+        "label": "Odd Records Ltd.",
+        "hyperlink": "https://www.discogs.com/master/1184747-Scuba-Z-The-Vanishing-American-Family"
+    }
+}
+
+
+
+00:00:17.550 --> 00:00:19.548
+{
+    "uid": "2",
+    "type": "video_source",
+    "data": {
+        "type": "video_source",
+        "title": "\"We lived here, you didn't...\" @ Bexley Hall, MIT",
+        "artist": "Andrei Ivanov",
+        "year": "2013",
+        "notes": "AI-upscaled and frame-interpolated",
+        "retrieved_from": "YouTube",
+        "hyperlink": "https://www.youtube.com/watch?v=e6m8se96yyM&ab_channel=AndreiIvanov"
+    }
+}
+
+00:00:47.000 --> 00:00:48.600
+{
+    "uid": "2",
+    "type": "video_source",
+    "data": {
+        "type": "video_source",
+        "title": "The November Actions",
+        "artist": "Ricky Leacock",
+        "year": "1969",
+        "notes": "AI-upscaled and frame-interpolated",
+        "retrieved_from": "MIT Museum",
+        "hyperlink": ""
+    }
+}
+
+00:00:56.000 --> 00:01:01.600
+{
+    "uid": "3",
+    "type": "video_source",
+    "data": {
+        "type": "video_source",
+        "title": "MIT: Progressions",
+        "artist": "David and Sheri Espar",
+        "year": "1969",
+        "notes": "AI-upscaled and frame-interpolated",
+        "retrieved_from": "Kenneth Friedman (YouTube)",
+        "hyperlink": "https://www.youtube.com/watch?v=p3mq5E0GwLA&ab_channel=KennethFriedman"
+    }
+}
+
+00:01:03.800 --> 00:01:15.600
+{
+    "uid": "3",
+    "type": "video_source",
+    "data": {
+        "type": "video_source",
+        "title": "Technology",
+        "artist": "unknown creators",
+        "year": "1934",
+        "notes": "AI-upscaled and frame-interpolated. View Kathleen E. 23's <a href=\"https://mitadmissions.org/blogs/entry/5-historical-mit-videos/#video5\"><strong>post</strong></a>",
+        "retrieved_from": "MIT Museum",
+        "hyperlink": "https://www.youtube.com/watch?v=rsO_67xzymQ&ab_channel=FromtheVaultofMIT"
+    }
+}
