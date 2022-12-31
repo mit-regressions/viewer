@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from 'next/router';
-import { Player as WebVttPlayer } from "webvtt-player";
+import WebVttPlayer from "./WebVttPlayer/WebVttPlayer";
 
 // functional component PlayerReact that uses ReactPlayer
 // TODO: parameterize video source and VTT source with props (general spec for 3rd party use!). must define spec.
@@ -39,12 +39,11 @@ export default function Player() {
                 />
             </div>
             <div>
-                {/* div "control-panel" has multiple buttons for displaying settings on WebVttPlayer */}
                 <div id="control-panel" className="flex flex-row">
                     <button id="show-metadata" className="bg-gray-200 hover:bg-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4">Show Metadata</button>
                 </div>
                 <WebVttPlayer
-                    // className="custom-webvtt-player"
+                    preload={false}
                     audio={audioUrl}
                     transcript={transcriptUrl}
                     metadata={metadataUrl} />

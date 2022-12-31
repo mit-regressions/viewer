@@ -20,7 +20,7 @@
 
         /* tailwind flex-CUSTOMNUMBER */
         /* @apply h-96 p-[15px] overflow-y-scroll flex-[6]; */
-        @apply text-orange-200;
+        /* @apply text-orange-200; /* this works lol */
     }
 
 }
