@@ -1,183 +1,144 @@
-import React, { Component } from 'react'
+import { useLayoutEffect, useState, useEffect, useRef } from 'react';
+import dynamic from "next/dynamic";
+// const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 import Transcript from './Transcript'
 import Metadata from './Metadata'
 import Search from './Search'
-import './WebVttPlayer.module.css'
+const VideoPlayer = dynamic(() => import("../VideoPlayer"), { ssr: false });
 
-import dynamic from "next/dynamic";
-const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
+type WebVttPlayerProps = {
+    audio: string,
+    videoUrl: string, // TODO: make naming scheme consistent lol
+    transcript: string,
+    metadataUrl: string,
+    preload: boolean,
+};
 
-// type for props
-type WebVttProps = {
-  video: string,
-  transcript: string,
-  metadata: string,
-  preload: boolean
+interface ReactPlayerRef {
+    seeking: boolean;
+    played: number;
+    duration: number;
+    seekTo: (time: number) => void;
 }
 
-
-interface VideoRef {
-  seeking: boolean;
-  played: number;
-  duration: number;
-  seekTo: (time: number) => void;
+interface NativePlayerRef {
+    currentTime: number;
+    ended: boolean;
+    loop: boolean;
+    muted: boolean;
+    play: () => void;
 }
 
-class WebVttPlayer extends Component<WebVttProps, { loaded: boolean, currentTime: number, query: string, seeking: boolean, played: Float64Array, playing: boolean }> {
-  metatrack: React.RefObject<unknown>
-  video: React.RefObject<unknown>
-  audio: React.RefObject<unknown>
-  track: React.RefObject<unknown>
+export default function WebVttPlayer(props: WebVttPlayerProps) {
+    const [trackLoaded, setTrackLoaded] = useState(false);
+    const [metatrackLoaded, setMetatrackLoaded] = useState(false);
+    const [query, setQuery] = useState('');
 
-  constructor(props: WebVttProps) {
-    super(props)
-    this.state = {
-      loaded: false,
-      currentTime: 0,
-      query: '',
-      seeking: false,
-      played: new Float64Array(0),
-      playing: false,
+    // TODO: determine if these should be set
+    const [currentTime, setCurrentTime] = useState(0);
+    const [seeking, setSeeking] = useState(false);
+    const [played, setPlayed] = useState(new Float64Array(0));
+    const [playing, setPlaying] = useState(false);
+
+    const trackRef = useRef(null);
+    const metatrackRef = useRef(null);
+
+    const reactPlayerRef = useRef<ReactPlayerRef>(null);
+    const nativePlayerRef = useRef<NativePlayerRef>(null);
+
+    const preload = props.preload ? "true" : "false"
+
+    useLayoutEffect(() => {
+
+        // Get a reference to the track and metatrack elements
+        const track = trackRef.current;
+        const metatrack = metatrackRef.current;
+
+        // Check if the tracks are fully loaded
+        if (track && track.track && track.track.cues && track.track.cues.length > 0) {
+            setTrackLoaded(true);
+        }
+
+        if (metatrack && metatrack.track && metatrack.track.cues && metatrack.track.cues.length > 0) {
+            setMetatrackLoaded(true);
+        }
+
+    }, [trackLoaded, metatrackLoaded]);
+
+
+
+    // if we figure out how to get access to Track refs with react-player (even in YouTube videos! That would be awesome), then we can start using this 
+    function reactPlayerSeek(secs: string) {
+
+        if (reactPlayerRef.current) {
+            reactPlayerRef.current.seekTo(parseFloat(secs))
+        }
+        setPlaying(true);
     }
 
-    this.track = React.createRef()
-    this.metatrack = React.createRef()
-    this.audio = React.createRef()
-    this.video = React.createRef();
-    // const playerRef=useRef();
-    
-    this.onLoaded = this.onLoaded.bind(this)
-    this.seek = this.seek.bind(this)
-    this.checkIfLoaded = this.checkIfLoaded.bind(this)
-    this.updateQuery = this.updateQuery.bind(this)
-  }
+    function seek(secs: number) {
+        if (nativePlayerRef.current) {
 
-  componentDidMount() {
-    this.checkIfLoaded()
-  }
-
-  handlePause = () => {
-    console.log('onPause')
-    this.setState({ playing: false })
-  }
-
-
-  render() {
-    let track = null
-    let metatrack = null
-    if (this.state.loaded) {
-      track = this.track.current.track
-      metatrack = this.metatrack.current.track
-      console.log("loaded video.current : ", this.video.current);
+            nativePlayerRef.current.currentTime = secs;
+            nativePlayerRef.current.play();
+        }
+        setPlaying(true);
     }
-    const preload = this.props.preload ? "true" : "false"
-    const metadata = this.props.metadata
-      ? <Metadata
-        url={this.props.metadata}
-        seek={this.seek}
-        track={metatrack} />
-      : ""
 
     return (
-      <div className="webvtt-player">
-        <div className="media">
-          <div className="player">
-            
-            <ReactPlayer
-              // a ref that works in our class component
-              ref={this.video}
-              controls={true}
-              onPause={this.handlePause}
-              crossOrigin="anonymous"
-              className="react-player"
-              url="https://youtu.be/TGKk3iwoI9I"
-              onSeek={e => console.log('onSeek', e)}
-              onProgress={this.handleProgress}
-            />
-            <audio
-              controls
-              crossOrigin="anonymous"
-              onLoad={this.onLoaded}
-              preload={preload}
-              ref={this.audio}>
-              <source src={this.props.audio} />
-              <track default
-                kind="subtitles"
-                src={this.props.transcript}
-                ref={this.track} />
-              <track default
-                kind="metadata"
-                src={this.props.metadata}
-                ref={this.metatrack} />
-            </audio>
-          </div>
-          <div className="tracks">
-            <Transcript
-              url={this.props.transcript}
-              seek={this.seek}
-              track={track}
-              query={this.state.query} />
-            {metadata}
-          </div>
-          <Search query={this.state.query} updateQuery={this.updateQuery} />
-        </div>
-      </div>
-    )
-  }
-
-  onLoaded() {
-    this.setState({ loaded: true })
-  }
-
-  checkIfLoaded(tries = 0) {
-    tries += 1
-    const e = this.track.current
-    if (e && e.track && e.track.cues && e.track.cues.length > 0) {
-      this.onLoaded()
-    } else if (!this.state.loaded) {
-      const wait = 25 * Math.pow(tries, 2)
-      setTimeout(this.checkIfLoaded, wait, tries)
-    }
-  }
-
-  // handleSeekMouseDown = e => {
-  //   this.setState({ seeking: true })
-  // }
-
-  // handleSeekChange = e => {
-  //   this.setState({ played: parseFloat(e.target.value) })
-  // }
-
-  // handleSeekMouseUp = e => {
-  //   this.setState({ seeking: false })
-  //   this.player.seekTo(parseFloat(e.target.value))
-  // }
-
-  handleProgress = state => {
-    console.log('onProgress', state)
-    // We only want to update time slider if we are not currently seeking
-    if (!this.state.seeking) {
-      this.setState(state)
-    }
-  }
-
-  // ORIGINAL
-  seek(secs: number) {
-    // scrub audio
-    this.audio.current.currentTime = secs
-    this.audio.current.play()
-
-    // scrub video
-    this.setState({ seeking: true })
-    console.log("this.video", this.video);
-    this.video.current?.seekTo(parseFloat(secs)) // TODO: should probs refactor ref to this.player
-
-  }
-
-  updateQuery(query: string) {
-    this.setState({ query: query })
-  }
-
+        <>
+            <div className="webvtt-player">
+                <div className="media">
+                    <div className="player">
+                        {/* <VideoPlayer playerRef={video} playing={playing} videoUrl={props.videoUrl} transcriptUrl={props.transcript} /> */}
+                        {/* a vanilla video element with source and tracks. so much easier oh my god */}
+                        <video
+                            preload={preload}
+                            ref={nativePlayerRef}
+                            crossOrigin="anonymous"
+                            controls={true}
+                        >
+                            <source src={props.videoUrl} type="video/mp4" />
+                            <track
+                                ref={trackRef}
+                                kind="subtitles"
+                                src={props.transcript}
+                                srcLang="en"
+                                default={true}
+                            />
+                            <track default
+                                kind="metadata"
+                                src={props.metadataUrl}
+                                ref={metatrackRef} />
+                        </video>
+                    </div>
+                    <div className="tracks">
+                        {trackLoaded ? (
+                            <>
+                                <Transcript
+                                    url={props.transcript}
+                                    seek={seek}
+                                    track={trackRef.current.track}
+                                    query={query}
+                                />
+                            </>
+                        ) : (
+                            "Loading transcript..."
+                        )}
+                        {metatrackLoaded && props.metadataUrl ? (
+                            <>
+                                <Metadata
+                                    url={props.metadataUrl}
+                                    seek={seek}
+                                    track={metatrackRef.current.track}
+                                />
+                            </>
+                        ) : (
+                            "\nLoading metadata..." // TODO: make better logic for showing if we wanna serve metadata
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 }
-
-export default WebVttPlayer
