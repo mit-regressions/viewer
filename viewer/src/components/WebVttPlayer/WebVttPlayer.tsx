@@ -58,7 +58,6 @@ export default function WebVttPlayer(props: WebVttPlayerProps) {
         if (track && track.track && track.track.cues && track.track.cues.length > 0) {
             setTrackLoaded(true);
         }
-
         if (metatrack && metatrack.track && metatrack.track.cues && metatrack.track.cues.length > 0) {
             setMetatrackLoaded(true);
         }
@@ -94,6 +93,7 @@ export default function WebVttPlayer(props: WebVttPlayerProps) {
                     <video
                         // width="75%"
                         preload={preload}
+                        // ignore ref errors for now
                         ref={nativePlayerRef}
                         crossOrigin="anonymous"
                         controls={true}
