@@ -87,57 +87,64 @@ export default function WebVttPlayer(props: WebVttPlayerProps) {
 
     return (
         <>
-            <div className="webvtt-player">
-                <div className="media">
-                    <div className="player">
-                        {/* <VideoPlayer playerRef={video} playing={playing} videoUrl={props.videoUrl} transcriptUrl={props.transcript} /> */}
-                        {/* a vanilla video element with source and tracks. so much easier oh my god */}
-                        <video
-                            preload={preload}
-                            ref={nativePlayerRef}
-                            crossOrigin="anonymous"
-                            controls={true}
-                        >
-                            <source src={props.videoUrl} type="video/mp4" />
-                            <track
-                                ref={trackRef}
-                                kind="subtitles"
-                                src={props.transcript}
-                                srcLang="en"
-                                default={true}
-                            />
-                            <track default
-                                kind="metadata"
-                                src={props.metadataUrl}
-                                ref={metatrackRef} />
-                        </video>
-                    </div>
-                    <div className="tracks">
-                        {trackLoaded ? (
-                            <>
-                                <Transcript
-                                    url={props.transcript}
-                                    seek={seek}
-                                    track={trackRef.current.track}
-                                    query={query}
-                                />
-                            </>
-                        ) : (
-                            "Loading transcript..."
-                        )}
-                        {metatrackLoaded && props.metadataUrl ? (
-                            <>
-                                <Metadata
-                                    url={props.metadataUrl}
-                                    seek={seek}
-                                    track={metatrackRef.current.track}
-                                />
-                            </>
-                        ) : (
-                            "\nLoading metadata..." // TODO: make better logic for showing if we wanna serve metadata
-                        )}
+            <div className="flex w-full overflow-hidden">
+                <div className="w-1/2 player">
+                    {/* <VideoPlayer playerRef={video} playing={playing} videoUrl={props.videoUrl} transcriptUrl={props.transcript} /> */}
+                    {/* a vanilla video element with source and tracks. so much easier oh my god */}
+                    <video
+                        // width="75%"
+                        preload={preload}
+                        ref={nativePlayerRef}
+                        crossOrigin="anonymous"
+                        controls={true}
+                        autoPlay={true}
+                    >
+                        <source src={props.videoUrl} type="video/mp4" />
+                        <track
+                            ref={trackRef}
+                            kind="subtitles"
+                            src={props.transcript}
+                            srcLang="en"
+                            default={true}
+                        />
+                        <track default
+                            kind="metadata"
+                            src={props.metadataUrl}
+                            ref={metatrackRef} />
+                    </video>
+                </div>
+                <div className="w-1/2">
+                    <div className="webvtt-player">
+                        <div className="media h-1\/3">
+                            <div className="tracks">
+                                {trackLoaded ? (
+                                    <>
+                                        <Transcript
+                                            url={props.transcript}
+                                            seek={seek}
+                                            track={trackRef.current.track}
+                                            query={query}
+                                        />
+                                    </>
+                                ) : (
+                                    "Loading transcript..."
+                                )}
+                                {metatrackLoaded && props.metadataUrl ? (
+                                    <>
+                                        <Metadata
+                                            url={props.metadataUrl}
+                                            seek={seek}
+                                            track={metatrackRef.current.track}
+                                        />
+                                    </>
+                                ) : (
+                                    "\nLoading metadata..." // TODO: make better logic for showing if we wanna serve metadata
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </>
     );

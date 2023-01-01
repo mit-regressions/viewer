@@ -25,23 +25,22 @@ const Home: NextPage = () => {
         <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-2 px-4 absolute top-4 right-4">
           toggle theme
         </button>
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          {/* should hug upper-lefthand side */}
-          {/* text in the upper-lefthand corner with some padding */}
+        <div className="px-4 py-32 pb-0 position-absolute">
           <div className="titles">
             <h1 className="text-1xl font-extrabold tracking-tight text-black dark:text-white sm:text-[3rem] top-4 left-4 absolute">
               documentary metadata viewer
             </h1>
             {/* hug the left-hand side of the screen */}
-            <h2 className=" tracking-tight text-gray-500 dark:text-white  top-20 left-6 absolute"><i>current film</i>: MIT: REGRESSIONS intro</h2>
+            <h2 className=" tracking-tight text-gray-500 dark:text-white  top-20 left-6 absolute"><i>current film</i>: <a href="https://www.youtube.com/watch?v=TGKk3iwoI9I&ab_channel=MIT%3AREGRESSIONS">MIT: REGRESSIONS intro</a> &nbsp; | &nbsp; <a href="https://github.com/mit-regressions/viewer/blob/igel-t3-initial/viewer/public/data/MIT%20Regressions%20intro%20metadata.vtt">metadata source</a></h2>
+            {/* <h2 className=" tracking-tight text-gray-500 dark:text-white  top-24 left-6 absolute"><i>metadata file source (VTT)</i>: <a href="https://www.youtube.com/watch?v=TGKk3iwoI9I&ab_channel=MIT%3AREGRESSIONS">MIT: REGRESSIONS intro</a></h2> */}
           </div>
          
 
           <Player />
 
-          <div className="flex flex-col items-center gap-2">
+          {/* <div className="flex flex-col items-center gap-2">
             <AuthShowcase />
-          </div>
+          </div> */}
         </div>
       </main>
     </>

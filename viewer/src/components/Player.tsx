@@ -15,6 +15,7 @@ export default function Player() {
     return (
         <>
             <WebVttPlayer
+                className="w-full h-full overflow-hidden position-absolute"
                 preload={false}
                 audio={audioUrl}
                 videoUrl={videoUrl}
