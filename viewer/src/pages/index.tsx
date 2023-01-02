@@ -14,6 +14,7 @@ const Home: NextPage = () => {
 
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const { theme, setTheme } = useTheme()
+  setTheme('light')
 
   const router = useRouter();
 
@@ -31,9 +32,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-black">
-        <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-2 px-4 absolute top-4 right-4">
+        {/* <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-2 px-4 absolute top-4 right-4">
           toggle theme
-        </button>
+        </button> */}
         <div className="px-4 py-32 pb-0 position-absolute">
           <div className="titles">
             <h1 className="text-1xl font-extrabold tracking-tight text-black dark:text-white sm:text-[3rem] top-4 left-4 absolute">
