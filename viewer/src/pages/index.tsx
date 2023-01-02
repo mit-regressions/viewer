@@ -40,7 +40,7 @@ const Home: NextPage = () => {
               documentary metadata viewer
             </h1>
             {/* hug the left-hand side of the screen */}
-            <h2 className=" tracking-tight text-gray-500 dark:text-white  top-20 left-6 absolute"><i>current film</i>: <a href="https://www.youtube.com/watch?v=TGKk3iwoI9I&ab_channel=MIT%3AREGRESSIONS">MIT: REGRESSIONS intro</a> &nbsp; | &nbsp; <a href="https://github.com/mit-regressions/viewer/blob/igel-t3-initial/viewer/public/data/MIT%20Regressions%20intro%20metadata.vtt">metadata source</a></h2>
+            <h2 className=" tracking-tight text-gray-500 dark:text-white  top-20 left-6 absolute"><i>current film</i>: <a href="https://www.youtube.com/watch?v=TGKk3iwoI9I&ab_channel=MIT%3AREGRESSIONS">MIT: REGRESSIONS intro</a> &nbsp; | &nbsp; <a href="https://github.com/mit-regressions/viewer/blob/main/viewer/public/data/MIT%20Regressions%20intro%20metadata.vtt">metadata source</a></h2>
             {/* <h2 className=" tracking-tight text-gray-500 dark:text-white  top-24 left-6 absolute"><i>metadata file source (VTT)</i>: <a href="https://www.youtube.com/watch?v=TGKk3iwoI9I&ab_channel=MIT%3AREGRESSIONS">MIT: REGRESSIONS intro</a></h2> */}
           </div>
 
