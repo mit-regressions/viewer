@@ -46,4 +46,4 @@ Bult on top of the excellent [webvtt-player](https://github.com/umd-mith/webvtt-
 Built with create-t3-app and deploying to Vercel (https://vercel.com/regressions)
 
 # Full schema definition
-See /schema.md for full definition of our custom .VTT metadata format
+See [`./viewer/metadata_schema.md`](https://github.com/mit-regressions/viewer/blob/main/viewer/metadata_schema.md) for full definition of our custom .VTT metadata format
