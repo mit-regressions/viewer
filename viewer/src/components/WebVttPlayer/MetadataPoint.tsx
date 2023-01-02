@@ -198,7 +198,7 @@ const VideoSourceCard: React.FC<VideoSourceData> = ({videoSource}) => {
 // TODO: fix typing
 const SongCard: React.FC<MusicData> = ({song}) => {
   return (
-    <div className="bg-white shadow-md p-4">
+    <div className="bg-yellow-50 shadow-md p-4">
       <h2 className="text-lg font-bold">{song.title}</h2>
       <div className="text-gray-600">
         <p className="mb-1">{song.artist}</p>

@@ -29,40 +29,57 @@ interface NativePlayerRef {
     play: () => void;
 }
 
+//Write a fetcher function to wrap the native fetch function and return the result of a call to url in json format
+// const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function WebVttPlayer(props: WebVttPlayerProps) {
     const [trackLoaded, setTrackLoaded] = useState(false);
     const [metatrackLoaded, setMetatrackLoaded] = useState(false);
     const [query, setQuery] = useState('');
 
     // TODO: determine if these should be set
-    const [currentTime, setCurrentTime] = useState(0);
-    const [seeking, setSeeking] = useState(false);
-    const [played, setPlayed] = useState(new Float64Array(0));
     const [playing, setPlaying] = useState(false);
 
-    const trackRef = useRef(null);
-    const metatrackRef = useRef(null);
+    const trackRef = useRef<TrackEvent>(null);
+    const metatrackRef = useRef<TrackEvent>(null);
 
     const reactPlayerRef = useRef<ReactPlayerRef>(null);
     const nativePlayerRef = useRef<NativePlayerRef>(null);
 
     const preload = props.preload ? "true" : "false"
 
-    useLayoutEffect(() => {
+    //There are 3 possible states: (1) loading when data is null (2) ready when the data is returned (3) error when there was an error fetching the data
+    // const { data, error } = useSWR('/api/staticdata', fetcher);
 
+    //Handle the error state
+    // if (error) console.log("Failed to load from SWR!"); //return <div>Failed to load</div>;
+    //Handle the loading state
+    // if (!data) console.log("Loading with SWR...")// return <div>Loading...</div>;
+
+    useEffect(() => {
         // Get a reference to the track and metatrack elements
-        const track = trackRef.current;
-        const metatrack = metatrackRef.current;
-
-        // Check if the tracks are fully loaded
-        if (track && track.track && track.track.cues && track.track.cues.length > 0) {
-            setTrackLoaded(true);
+        // TODO: this manual timeout is extremely gross! figure out how to conditionally rendder <Transcript> and <Metadata> according to loading of these refs without this awful hard-coded thing. NextJs certainly supports something better for on-time ref loading (SWR? getProps?)
+        function checkIfLoaded(tries = 0) {
+            tries += 1
+            const track = trackRef.current;
+            const metatrack = metatrackRef.current;
+            if (track && track.track && track.track.cues && track.track.cues.length > 0) {
+                setTrackLoaded(true);
+            }
+            if (metatrack && metatrack.track && metatrack.track.cues && metatrack.track.cues.length > 0) {
+                setMetatrackLoaded(true);
+            }
+            else if (!metatrackLoaded || !trackLoaded) {
+                const wait = 25 * Math.pow(tries, 2)
+                setTimeout(() => checkIfLoaded(tries), wait);
+            }
         }
-        if (metatrack && metatrack.track && metatrack.track.cues && metatrack.track.cues.length > 0) {
-            setMetatrackLoaded(true);
-        }
+        checkIfLoaded();
 
-    }, [trackLoaded, metatrackLoaded]);
+    
+
+
+    }, []);
 
 
 

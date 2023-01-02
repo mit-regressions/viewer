@@ -1,18 +1,27 @@
 import React, { useRef } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from 'next/router';
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
 import { useTheme } from 'next-themes'
-import Player from '../components/Player'
 
+import WebVttPlayer from "../components/WebVttPlayer/WebVttPlayer";
 
 const Home: NextPage = () => {
 
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const { theme, setTheme } = useTheme()
+
+  const router = useRouter();
+
+  const videoUrl = '/data/MIT Regressions intro video.mp4' // BIZARRE BUG: react-player component only works when I live-reload URL to valid path. if Chrome loads directly, then returns "failed to load media".
+  const audioUrl = router.asPath + 'data/MIT Regressions intro audio.mp3'
+  const transcriptUrl = router.asPath + "data/MIT Regressions intro captions.vtt"
+  const metadataUrl = router.asPath + "data/MIT Regressions intro metadata.vtt"
+
 
   return (
     <>
@@ -34,9 +43,14 @@ const Home: NextPage = () => {
             <h2 className=" tracking-tight text-gray-500 dark:text-white  top-20 left-6 absolute"><i>current film</i>: <a href="https://www.youtube.com/watch?v=TGKk3iwoI9I&ab_channel=MIT%3AREGRESSIONS">MIT: REGRESSIONS intro</a> &nbsp; | &nbsp; <a href="https://github.com/mit-regressions/viewer/blob/igel-t3-initial/viewer/public/data/MIT%20Regressions%20intro%20metadata.vtt">metadata source</a></h2>
             {/* <h2 className=" tracking-tight text-gray-500 dark:text-white  top-24 left-6 absolute"><i>metadata file source (VTT)</i>: <a href="https://www.youtube.com/watch?v=TGKk3iwoI9I&ab_channel=MIT%3AREGRESSIONS">MIT: REGRESSIONS intro</a></h2> */}
           </div>
-         
 
-          <Player />
+          <WebVttPlayer
+            preload={true}
+            audio={audioUrl}
+            videoUrl={videoUrl}
+            transcript={transcriptUrl}
+            metadataUrl={metadataUrl}
+          />
 
           {/* <div className="flex flex-col items-center gap-2">
             <AuthShowcase />
