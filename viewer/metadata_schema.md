@@ -5,8 +5,8 @@
   "start": "",
   "end": "",
   "uid": "",
-	"type": {"music","commentary","transcript","video_source","narration_source", "ohms"}
-	"data": {}
+  "type": "music" | "commentary" | "transcript" | "video_source" | "narration_source" | "ohms"
+  "data": {}
 }
 
 ```
@@ -26,7 +26,7 @@
 }
 ```
 
-### **transcript**
+##### **transcript**
 
 ```jsx
 {
@@ -35,7 +35,7 @@
 }
 ```
 
-### **footage_source**
+##### **footage_source**
 
 ```jsx
 {
@@ -52,7 +52,7 @@
 }
 ```
 
-### **narration_source**
+##### **narration_source**
 
 ```jsx
 {
@@ -69,7 +69,9 @@
 }
 ```
 
-### **ohms** (or **concept**) ([http://ohda.matrix.msu.edu/2014/11/indexing-interviews-in-ohms/](http://ohda.matrix.msu.edu/2014/11/indexing-interviews-in-ohms/))
+##### **ohms** (or **general_concept**) 
+
+Based on [oral history metadata standard](http://ohda.matrix.msu.edu/2014/11/indexing-interviews-in-ohms/)
 
 ```jsx
 { // directly copied from webvtt-player (which copies the OHMS standard)
